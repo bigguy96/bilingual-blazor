@@ -19,8 +19,7 @@
     void OnSelected(ChangeEventArgs e)
     {
         var culture = (string)e.Value;
-        var uri = new Uri(navigationManager.Uri)
-            .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        var uri = new Uri(navigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
         var query = $"?culture={Uri.EscapeDataString(culture)}&" +
                     $"redirectionUri={Uri.EscapeDataString(uri)}";
 
