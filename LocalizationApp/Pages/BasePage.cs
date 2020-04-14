@@ -42,8 +42,10 @@ namespace LocalizationApp.Pages
             var alternateRoute = routeAttributes?.Single()?.RouteAttributes.Template;
 
             navigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
-            //navigationManager.NavigateTo(uri);
-            //StateHasChanged();           
+        //navigationManager.NavigateTo(uri);
+        //StateHasChanged();     
+
+        //https://blazor-tutorial.net/knowledge-base/50102726/get-current-url-in-a-blazor-component
 
 
             await base.OnInitializedAsync();
