@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Localization;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+//using Microsoft.AspNetCore.Components.IUriHelper;
 
 namespace LocalizationApp.Pages
 {
@@ -13,48 +16,63 @@ namespace LocalizationApp.Pages
         [Inject]
         protected NavigationManager navigationManager { get; set; }
 
-        public abstract string PageName { get;  }
+        //protected UriHelper uriHelper
+
+        public abstract string PageName { get; }
 
         protected override async Task OnInitializedAsync()
         {
-            var culture = CultureInfo.CurrentCulture.Name;
+            //var currentCulture = CultureInfo.CurrentCulture.Name;           
             var uri = new Uri(navigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-            var query = $"?culture={Uri.EscapeDataString(culture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}";
-            var path = "/Culture/SetCulture" + query;
+            var currentCulture = uri.Contains("/en/") ? "en" : "fr";
+            var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
+            var query = $"?culture={Uri.EscapeDataString(currentCulture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}";
+            //var path = "/Culture/SetCulture" + query;
 
-            var pageTypeList = Assembly.GetExecutingAssembly().GetTypes()
-                        .Where(t => t.GetCustomAttribute(typeof(RouteAttribute)) != null);
+            //var cultureInfo = new CultureInfo(currentCulture);
+            //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            //CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            //var cc = CultureInfo.CurrentCulture.Name;
 
-            // Get all the components whose base class is ComponentBase
-            var components = Assembly.GetExecutingAssembly()
-                                   .ExportedTypes
-                                   .Where(t =>
-                                  t.IsSubclassOf(typeof(BasePage)));
+            // Get all the components whose base class is basepage
+            var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
+                                  .Where(t => t.IsSubclassOf(typeof(BasePage)))
+                                  .Where(x => x.Name.Equals(PageName, StringComparison.CurrentCultureIgnoreCase))
+                                  .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>().SingleOrDefault(s => s.Template.Contains(alternateCulture)) });
+            var alternateRoute = routeAttributes?.Single()?.RouteAttributes.Template;
 
-            //var t = PageName;
-
-            foreach (var component in components)
-            {
-                // Print the name (Type) of the Component
-                Console.WriteLine(component.ToString());
-
-                // Now check if this component contains the Authorize attribute
-                var allAttributes = component.GetCustomAttributes(inherit: true);
-
-                var authorizeDataAttributes = allAttributes.OfType<RouteAttribute>().ToArray();
-
-                //// If it does, show this to us... 
-                foreach (var authorizeData in authorizeDataAttributes)
-                {
-
-                    Console.WriteLine(authorizeData.ToString());
-                }
-            }
+            navigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+            //navigationManager.NavigateTo(uri);
+            //StateHasChanged();           
 
 
-                base.OnInitializedAsync();
+            await base.OnInitializedAsync();
         }
-    }
+
+        
+
+        //protected override Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+        //        var uri = new Uri(navigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        //        var currentCulture = uri.Contains("/en/") ? "en" : "fr";                
+        //        var query = $"?culture={Uri.EscapeDataString(currentCulture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}";
+        //        var path = "/Culture/SetCulture" + query;
+
+        //        navigationManager.NavigateTo(path, forceLoad: true);
+        //    }
+
+        //    return base.OnAfterRenderAsync(firstRender);
+        //}
+
+        //private async Task DoNothing()
+        //{
+        //    await Task.FromResult(0);
+        //}
+    }    
 }
 
 //https://stackoverflow.com/questions/60161726/find-the-blazor-component-class-corresponding-to-a-given-path
+//https://stackoverflow.com/questions/60376576/blazor-how-get-all-route-urls-from-razor-pages-in-blazor-server-side-project
+//https://gunnarpeipman.com/aspnet-core-simple-localization/
