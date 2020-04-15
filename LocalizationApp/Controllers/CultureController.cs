@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LocalizationApp.Pages
@@ -19,11 +15,11 @@ namespace LocalizationApp.Pages
                     CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)));
             }
 
-            //if (redirectionUri == null) redirectionUri = "/";
+            if (redirectionUri == null) redirectionUri = "/";
 
-            //return LocalRedirect(redirectionUri);
+            return LocalRedirect(redirectionUri);
 
-            return new EmptyResult();
+            //return new EmptyResult();
         }
     }
 }
