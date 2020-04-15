@@ -3,49 +3,49 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.AspNetCore.Localization
 
-@{
-    var requestCultureFeature = Request.HttpContext.Features.Get<IRequestCultureFeature>();
-    var twoLetterRequestCulture = requestCultureFeature.RequestCulture.UICulture.TwoLetterISOLanguageName;
-    var toggle = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "Français" : "English";
-    var appName = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "English Application" : " Application Français";    
-}
+    @{
+        var requestCultureFeature = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+        var twoLetterRequestCulture = requestCultureFeature.RequestCulture.UICulture.TwoLetterISOLanguageName;
+        var toggle = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "Français" : "English";
+        var appName = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "English Application" : " Application Français";
+    }
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
-<!--[if lt IE 9]><html class="no-js lt-ie9" lang="@twoLetterRequestCulture" dir="ltr"><![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="@twoLetterRequestCulture" dir="ltr">
-<!--<![endif]-->
-<head>
-    <meta charset="utf-8">
-    <!-- Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
-    <title>Content page - Centrally Deployed Templates Solution (CDTS)</title>
-    <meta content="width=device-width,initial-scale=1" name="viewport">
-    <!-- Meta data -->
-    <meta name="description" content="Web Experience Toolkit (WET) includes reusable components for building and maintaining innovative Web sites that are accessible, usable, and interoperable. These reusable components are open source software and free for use by departments and external Web communities">
-    <!-- Meta data-->
-    <!-- Load closure template scripts -->
-    <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/soyutils.js"></script>
-    <script src=@string.Format("https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-{0}.js", twoLetterRequestCulture)></script>
-    <noscript>
-        <!-- Write closure fall-back static file -->
-        <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/refTop.html -->
-    </noscript>
-    <!-- Write closure template -->
-    <script>
-        document.write(wet.builder.refTop({
-            "isApplication": true
-        }));
-    </script>
-</head>
-<body vocab="https://schema.org/" typeof="WebPage">
-    <div id="def-top">
-        <!-- Write closure fall-back static file -->
-        <!-- /ROOT/app/cls/WET/g<!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/custommenuTop-@(twoLetterRequestCulture).html -->
-    </div>
-    <!-- Write closure template -->
-    d
-    <script>
+    <!--[if lt IE 9]><html class="no-js lt-ie9" lang="@twoLetterRequestCulture" dir="ltr"><![endif]-->
+    <!--[if gt IE 8]><!-->
+    <html class="no-js" lang="@twoLetterRequestCulture" dir="ltr">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <!-- Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW) wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
+        <title>Content page - Centrally Deployed Templates Solution (CDTS)</title>
+        <meta content="width=device-width,initial-scale=1" name="viewport">
+        <!-- Meta data -->
+        <meta name="description" content="Web Experience Toolkit (WET) includes reusable components for building and maintaining innovative Web sites that are accessible, usable, and interoperable. These reusable components are open source software and free for use by departments and external Web communities">
+        <!-- Meta data-->
+        <!-- Load closure template scripts -->
+        <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/soyutils.js"></script>
+        <script src=@string.Format("https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-{0}.js", twoLetterRequestCulture)></script>
+        <noscript>
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/refTop.html -->
+        </noscript>
+        <!-- Write closure template -->
+        <script>
+            document.write(wet.builder.refTop({
+                "isApplication": true
+            }));
+        </script>
+    </head>
+    <body vocab="https://schema.org/" typeof="WebPage">
+        <div id="def-top">
+            <!-- Write closure fall-back static file -->
+            <!-- /ROOT/app/cls/WET/g<!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/custommenuTop-@(twoLetterRequestCulture).html -->
+        </div>
+        <!-- Write closure template -->
+        d
+        <script>
         var defTop = document.getElementById("def-top");
         defTop.outerHTML = wet.builder.appTop({
             "appName": [{ "text": "@appName", "href": "#" }],
@@ -64,47 +64,47 @@
                 "text": "Link 4"
             }]
         });
-    </script>
-    <main role="main" property="mainContentOfPage" class="container">
+        </script>
+        <main role="main" property="mainContentOfPage" class="container">
 
-        <app>
-            @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
-        </app>
+            <app>
+                @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
+            </app>
 
-        <div id="def-preFooter">
+            <div id="def-preFooter">
+
+                <!-- Write closure fall-back static file -->
+                <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/preFooter-@(twoLetterRequestCulture).html -->
+            </div>
+            <!-- Write closure template -->
+            <script>
+                var defPreFooter = document.getElementById("def-preFooter");
+                defPreFooter.outerHTML = wet.builder.preFooter({
+                    "dateModified": "2019-03-08"
+                });
+            </script>
+        </main>
+        <div id="def-footer">
 
             <!-- Write closure fall-back static file -->
-            <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/preFooter-@(twoLetterRequestCulture).html -->
+            <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/appFooter-@(twoLetterRequestCulture).html -->
         </div>
         <!-- Write closure template -->
+        d
         <script>
-            var defPreFooter = document.getElementById("def-preFooter");
-            defPreFooter.outerHTML = wet.builder.preFooter({
-                "dateModified": "2019-03-08"
+            var defFooter = document.getElementById("def-footer");
+            defFooter.outerHTML = wet.builder.appFooter({
+                "showFeatures": false
             });
         </script>
-    </main>
-    <div id="def-footer">
-
-        <!-- Write closure fall-back static file -->
-        <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/appFooter-@(twoLetterRequestCulture).html -->
-    </div>
-    <!-- Write closure template -->
-    d
-    <script>
-        var defFooter = document.getElementById("def-footer");
-        defFooter.outerHTML = wet.builder.appFooter({
-            "showFeatures": false
-        });
-    </script>
-    <!-- Write closure template -->
-    <script>
-        document.write(wet.builder.refFooter({
-            "isApplication": true
-        }));
-    </script>
-    <script src="_framework/blazor.server.js"></script>
-</body>
+        <!-- Write closure template -->
+        <script>
+            document.write(wet.builder.refFooter({
+                "isApplication": true
+            }));
+        </script>
+        <script src="_framework/blazor.server.js"></script>
+    </body>
 </html>
 
 

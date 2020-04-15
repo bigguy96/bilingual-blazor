@@ -1,30 +1,23 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Components.IUriHelper;
 
 namespace LocalizationApp.Pages
 {
     public abstract class BasePage : ComponentBase
     {
         [Inject]
-        protected NavigationManager navigationManager { get; set; }
-
-        //protected UriHelper uriHelper
+        protected NavigationManager NavigationManager { get; set; }        
 
         public abstract string PageName { get; }
 
         protected override async Task OnInitializedAsync()
         {
             //var currentCulture = CultureInfo.CurrentCulture.Name;           
-            var uri = new Uri(navigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var currentCulture = uri.Contains("/en/") ? "en" : "fr";
             var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
             var query = $"?culture={Uri.EscapeDataString(currentCulture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}?lang={currentCulture}";              
@@ -36,21 +29,20 @@ namespace LocalizationApp.Pages
                                   .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>().SingleOrDefault(s => s.Template.Contains(alternateCulture)) });
             var alternateRoute = routeAttributes?.Single()?.RouteAttributes.Template;
 
-            var uri1 = navigationManager.ToAbsoluteUri(navigationManager.Uri); //you can use IURIHelper for older versions
+            var uri1 = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
 
-            if (QueryHelpers.ParseQuery(uri1.Query).TryGetValue("lang", out var token))
-            {
-                var token_par = token.First();
-            }
-            else
-            {
-                navigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
-            }
+            //if (QueryHelpers.ParseQuery(uri1.Query).TryGetValue("lang", out var token))
+            //{
+            //    var token_par = token.First();
+            //}
+            //else
+            //{
+            //    NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
+            //}
 
 
-        //https://stackoverflow.com/questions/53786347/multiple-query-string-parameters-in-blazor-routing
+            //https://stackoverflow.com/questions/53786347/multiple-query-string-parameters-in-blazor-routing
             //https://blazor-tutorial.net/knowledge-base/50102726/get-current-url-in-a-blazor-component
-
 
             await base.OnInitializedAsync();
         }
