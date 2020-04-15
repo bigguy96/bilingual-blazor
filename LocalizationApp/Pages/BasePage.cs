@@ -27,13 +27,7 @@ namespace LocalizationApp.Pages
             var uri = new Uri(navigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var currentCulture = uri.Contains("/en/") ? "en" : "fr";
             var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
-            var query = $"?culture={Uri.EscapeDataString(currentCulture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}?lang={currentCulture}";
-            //var path = "/Culture/SetCulture" + query;
-
-            //var cultureInfo = new CultureInfo(currentCulture);
-            //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-            //CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-            //var cc = CultureInfo.CurrentCulture.Name;
+            var query = $"?culture={Uri.EscapeDataString(currentCulture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}?lang={currentCulture}";              
 
             // Get all the components whose base class is basepage
             var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
