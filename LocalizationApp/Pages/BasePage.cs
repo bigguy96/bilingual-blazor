@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -15,12 +14,10 @@ namespace LocalizationApp.Pages
         public abstract string PageName { get; }
 
         protected override async Task OnInitializedAsync()
-        {
-            //var currentCulture = CultureInfo.CurrentCulture.Name;           
+        {                   
             var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var currentCulture = uri.Contains("/en/") ? "en" : "fr";
-            var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
-            var query = $"?culture={Uri.EscapeDataString(currentCulture)}&" + $"redirectionUri={Uri.EscapeDataString(uri)}?lang={currentCulture}";              
+            var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";                         
 
             // Get all the components whose base class is basepage
             var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
@@ -28,18 +25,6 @@ namespace LocalizationApp.Pages
                                   .Where(x => x.Name.Equals(PageName, StringComparison.CurrentCultureIgnoreCase))
                                   .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>().SingleOrDefault(s => s.Template.Contains(alternateCulture)) });
             var alternateRoute = routeAttributes?.Single()?.RouteAttributes.Template;
-
-            var uri1 = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-
-            //if (QueryHelpers.ParseQuery(uri1.Query).TryGetValue("lang", out var token))
-            //{
-            //    var token_par = token.First();
-            //}
-            //else
-            //{
-            //    NavigationManager.NavigateTo("/Culture/SetCulture" + query, forceLoad: true);
-            //}
-
 
             //https://stackoverflow.com/questions/53786347/multiple-query-string-parameters-in-blazor-routing
             //https://blazor-tutorial.net/knowledge-base/50102726/get-current-url-in-a-blazor-component

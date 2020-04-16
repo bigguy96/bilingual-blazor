@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
 
 namespace LocalizationApp
 {
@@ -40,10 +42,25 @@ namespace LocalizationApp
                 options.DefaultRequestCulture = new RequestCulture("en");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
-            });
 
-            #endregion 
+                options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
+                {
+                    var currentCulture = "en";
+                    var segments = context.Request.Path.Value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (segments.Length > 1 && segments[0].Length == 2)
+                    {
+                        currentCulture = segments[0];
+                    }
+
+                    var requestCulture = new ProviderCultureResult(currentCulture, currentCulture);
+
+                    return await Task.FromResult(requestCulture);
+                }));
+
+            });
         }
+        #endregion
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -81,3 +98,6 @@ namespace LocalizationApp
         }
     }
 }
+
+//https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization-extensibility?view=aspnetcore-3.1
+//https://www.jeffogata.com/asp-net-core-localization-culture/
