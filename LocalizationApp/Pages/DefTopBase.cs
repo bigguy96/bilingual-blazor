@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using LocalizationApp.Entities;
+using LocalizationApp.Utils;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using System;
@@ -6,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 
 namespace LocalizationApp.Pages
 {
@@ -17,7 +20,7 @@ namespace LocalizationApp.Pages
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
-        [Inject] 
+        [Inject]
         public IStringLocalizer<DefTop> Localizer { get; set; }
 
         //protected override async Task OnInitializedAsync()
@@ -56,8 +59,19 @@ namespace LocalizationApp.Pages
 
                 var alternateRoute = routeAttributes?.Single(s => s.RouteAttributes != null)?.RouteAttributes.Template;
 
-                await JSRuntime.InvokeVoidAsync("exampleJsFunctions.appTop",
-                    Localizer["ApplicationName"], currentCulture, alternateRoute, Localizer["AlternateLanguage"]);
+                var appTop = new AppTop
+                {
+                    AppName = new List<Link> { new Link { Href = "#", Text = Localizer["ApplicationName"] } },                   
+                    LngLinks = new List<LanguageLink> { new LanguageLink { Href = alternateRoute } },
+                    MenuLinks = new List<MenuLink> { new MenuLink { Href = "#", Text = "Nav 1" }, new MenuLink { Href = "#", Text = "Nav 2" }, new MenuLink { Href = "#", Text = "Nav 3" }, new MenuLink { Href = "#", Text = "Nav 4" } }
+
+                };
+
+                var json = JsonSerializationHelper.SerializeToJson(appTop);
+
+                
+
+                await JSRuntime.InvokeVoidAsync("exampleJsFunctions.appTop",  json);
             }
 
             await base.OnAfterRenderAsync(firstRender);

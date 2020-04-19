@@ -1,23 +1,20 @@
 ﻿window.exampleJsFunctions = {
-    appTop: function (appName, lang, alternateLink, text) {
+    appTop: function (settings) {
+        console.log(settings);
+        //console.log(JSON.stringify(settings));
+        //console.log(JSON.parse(settings));
+
+        let a = JSON.stringify(settings);
+        let b = JSON.parse(a);
+
+        let s = settings.slice(1, -1);
+
+        console.log(a);
+        console.log(b);
+
+
         var defTop = document.getElementById("def-top");
-        defTop.outerHTML = wet.builder.appTop({
-            "appName": [{ "text": appName, "href": "#" }],
-            "lngLinks": [{ "lang": lang, "href": alternateLink, "text": text }],
-            "menuLinks": [{
-                "href": "#",
-                "text": "Link 1"
-            }, {
-                "href": "#",
-                "text": "Link 2"
-            }, {
-                "href": "#",
-                "text": "Link 3"
-            }, {
-                "href": "#",
-                "text": "Link 4"
-            }]
-        });
+        defTop.outerHTML = wet.builder.appTop(settings);
     }
     //displayWelcome: function (welcomeMessage) {
     //    document.getElementById('welcome').innerText = welcomeMessage;
