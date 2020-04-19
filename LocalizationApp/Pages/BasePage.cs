@@ -17,8 +17,9 @@ namespace LocalizationApp.Pages
         {                   
             var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var currentCulture = uri.Contains("/en/") ? "en" : "fr";
-            var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";                         
+            var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
 
+           
             // Get all the components whose base class is basepage
             var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
                                   .Where(t => t.IsSubclassOf(typeof(BasePage)))

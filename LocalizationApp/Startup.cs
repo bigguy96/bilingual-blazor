@@ -101,3 +101,6 @@ namespace LocalizationApp
 
 //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization-extensibility?view=aspnetcore-3.1
 //https://www.jeffogata.com/asp-net-core-localization-culture/
+//https://stackoverflow.com/questions/38170739/handle-culture-in-route-url-via-requestcultureproviders
+
+//https://stackoverflow.com/questions/58589274/localization-based-on-url-net-core-3-0
