@@ -13,5 +13,7 @@ namespace LocalizationApp.Pages
 
         [Inject]
         public IStringLocalizer<Test> localizer { get; set; }
+
+
     }
 }

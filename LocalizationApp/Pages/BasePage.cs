@@ -13,25 +13,27 @@ namespace LocalizationApp.Pages
 
         public abstract string PageName { get; }
 
-        protected override async Task OnInitializedAsync()
-        {                   
-            var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-            var currentCulture = uri.Contains("/en/") ? "en" : "fr";
-            var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    //var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+        //    //var currentCulture = uri.Contains("/en/") ? "en" : "fr";
+        //    //var alternateCulture = currentCulture.Equals("en") ? "/fr/" : "/en/";
 
-           
-            // Get all the components whose base class is basepage
-            var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
-                                  .Where(t => t.IsSubclassOf(typeof(BasePage)))
-                                  .Where(x => x.Name.Equals(PageName, StringComparison.CurrentCultureIgnoreCase))
-                                  .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>().SingleOrDefault(s => s.Template.Contains(alternateCulture)) });
-            var alternateRoute = routeAttributes?.Single()?.RouteAttributes.Template;
 
-            //https://stackoverflow.com/questions/53786347/multiple-query-string-parameters-in-blazor-routing
-            //https://blazor-tutorial.net/knowledge-base/50102726/get-current-url-in-a-blazor-component
+        //    //// Get all the components whose base class is basepage
+        //    //var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
+        //    //                      .Where(t => t.IsSubclassOf(typeof(BasePage)))
+        //    //                      .Where(x => x.Name.Equals(PageName, StringComparison.CurrentCultureIgnoreCase))
+        //    //                      .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>().SingleOrDefault(s => s.Template.Contains(alternateCulture)) });
+        //    //var alternateRoute = routeAttributes?.Single()?.RouteAttributes.Template;
 
-            await base.OnInitializedAsync();
-        }
+        //    //https://stackoverflow.com/questions/53786347/multiple-query-string-parameters-in-blazor-routing
+        //    //https://blazor-tutorial.net/knowledge-base/50102726/get-current-url-in-a-blazor-component
+
+        //    //StateHasChanged();
+
+        //    await base.OnInitializedAsync();
+        //}
     }
 }
 
