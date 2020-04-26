@@ -1,15 +1,7 @@
-﻿using LocalizationApp.Entities;
-using LocalizationApp.Utils;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Html;
-using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Web.Helpers;
 
 namespace LocalizationApp.Pages
 {
@@ -73,9 +65,9 @@ namespace LocalizationApp.Pages
 
                 //var json = JsonSerializationHelper.SerializeToJson(appTop);                
 
-                await JSRuntime.InvokeVoidAsync("exampleJsFunctions.appTop",  Json);
+                await JSRuntime.InvokeVoidAsync("exampleJsFunctions.appTop", Json);
 
-                StateHasChanged();
+                //StateHasChanged();
             }
 
             await base.OnAfterRenderAsync(firstRender);

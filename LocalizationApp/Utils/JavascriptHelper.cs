@@ -21,7 +21,7 @@ namespace LocalizationApp.Utils
 
             // get @page values from a page and get alternate language.
             var routeAttributes = Assembly.GetExecutingAssembly().ExportedTypes
-                      .Where(t => t.IsSubclassOf(typeof(BasePage)))
+                      .Where(t => t.IsSubclassOf(typeof(ComponentBase)))
                       .Where(x => x.Name.Length > 1)
                       .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>().SingleOrDefault(s => s.Template.Contains(alternateCulture)) });
 
