@@ -15,6 +15,8 @@ namespace LocalizationApp.Pages
         {
             var c = CultureInfo.CurrentCulture.Name;
 
+            StateHasChanged();
+
             //base.OnInitialized();
         }
     }
