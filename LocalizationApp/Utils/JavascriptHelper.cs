@@ -1,13 +1,9 @@
 ﻿using LocalizationApp.Entities;
-using LocalizationApp.Pages;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Html;
-using Microsoft.Extensions.Localization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace LocalizationApp.Utils
 {

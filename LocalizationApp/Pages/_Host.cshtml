@@ -11,10 +11,6 @@
 
     var path = HttpContext.Request.Path;
     var json = LocalizationApp.Utils.JavascriptHelper.GetAppTop(path, appName);
-
-    //HttpContext.Response.Cookies.Append(
-    //            CookieRequestCultureProvider.DefaultCookieName,
-    //            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(twoLetterRequestCulture)));
 }
 
 <!DOCTYPE html>
@@ -98,36 +94,15 @@
     </script>
     <script>
         (function () {
-            // your page initialization code here
-            // the DOM will be available here
-
-            //alert('test');
-
-            const parent = document.querySelector('#wb-lng ul li a');
-            console.log(parent);
-            console.log(parent.getAttribute('href'));
-            console.log('@(twoLetterRequestCulture)');
-            console.log('/Culture/SetCulture?culture=' + '@twoLetterRequestCulture' + '&redirectionUri=' + parent.getAttribute('href'));
-            //const children = parent.children;
-            //console.log(children[3]);
-            parent.addEventListener('click', function () {
-                //alert('click!');
-                window.location = parent.getAttribute('href'); // '/Culture/SetCulture?culture=' + '@twoLetterRequestCulture' + '&redirectionUri=' + parent.getAttribute('href');
+            const toggle = document.querySelector('#wb-lng ul li a');            
+            toggle.addEventListener('click', function () {
+            window.location = toggle.getAttribute('href');
             })
         })();
-    </script>
-    @*<script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Handler when the DOM is fully loaded
-                alert('test');
-            });
-        </script>*@
+    </script>    
     <script src="_framework/blazor.server.js"></script>
-    @*<script src="~/js/site.js"></script>*@
-
 </body>
 </html>
-
 
 
 @*https://stackoverflow.com/questions/60951806/asp-net-core-blazor-how-to-load-different-host-cshtml-files-based-on-header-va*@

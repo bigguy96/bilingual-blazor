@@ -46,13 +46,10 @@ namespace LocalizationApp
 
                 options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
                 {
-                    //var currentCulture = "en";
                     var segments = context.Request.Path.Value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (segments.Length > 1 && segments[0].Length == 2)
                     {
-                        //currentCulture = segments[0];
-
                         if(segments[0].Equals("en", StringComparison.OrdinalIgnoreCase))
                         {
                             currentCulture = "en";
@@ -62,15 +59,6 @@ namespace LocalizationApp
                             currentCulture = "fr";
                         }
                     }
-
-                    //if (context.Request.Path.Value.Contains("/fr/"))
-                    //{
-                    //    currentCulture = "fr";
-                    //}
-                    //else
-                    //{
-                    //    currentCulture = "en";
-                    //}
 
                     var requestCulture = new ProviderCultureResult(currentCulture, currentCulture);
 
