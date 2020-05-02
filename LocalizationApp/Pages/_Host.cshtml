@@ -96,8 +96,8 @@
         (function () {
             const toggle = document.querySelector('#wb-lng ul li a');            
             toggle.addEventListener('click', function () {
-                //window.location = toggle.getAttribute('href');
-                DotNet.invokeMethodAsync("LocalizationApp", "Redirect", toggle.getAttribute('href'));
+                window.location = toggle.getAttribute('href');
+                //DotNet.invokeMethodAsync("LocalizationApp", "Redirect", toggle.getAttribute('href'));
             })            
         })();
     </script>    
