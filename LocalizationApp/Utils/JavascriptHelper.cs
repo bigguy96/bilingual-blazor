@@ -34,9 +34,7 @@ namespace LocalizationApp.Utils
 
             };
 
-            var json = JsonSerializationHelper.SerializeToJson(appTop);
-
-            return json;
+            return JsonSerializationHelper.SerializeToJson(appTop);
         }
     }
 }
