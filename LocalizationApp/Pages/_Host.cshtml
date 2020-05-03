@@ -10,7 +10,13 @@
     var appName = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "English Application" : " Application Français";
 
     var path = HttpContext.Request.Path;
-    var json = LocalizationApp.Utils.JavascriptHelper.GetAppTop(path, appName);
+    var refTop = LocalizationApp.Utils.JavascriptHelper.GetRefTop();
+    var appTop = LocalizationApp.Utils.JavascriptHelper.GetAppTop(path, appName);
+    var preFooter = LocalizationApp.Utils.JavascriptHelper.GetDefPreFooter();
+    var appFooter = LocalizationApp.Utils.JavascriptHelper.GetAppFooter();
+    var refFooter = LocalizationApp.Utils.JavascriptHelper.GetRefFooter();
+
+    //https://cenw-wscoe.github.io/sgdc-cdts/docs/internet-en.html
 }
 
 <!DOCTYPE html>
@@ -36,9 +42,7 @@
     </noscript>
     <!-- Write closure template -->
     <script>
-        document.write(wet.builder.refTop({
-            "isApplication": true
-        }));
+        document.write(wet.builder.refTop(@refTop));
     </script>
     <base href="~/" />
 </head>
@@ -50,7 +54,7 @@
     <!-- Write closure template -->
     <script>
             var defTop = document.getElementById("def-top");
-            defTop.outerHTML = wet.builder.appTop(@json);
+            defTop.outerHTML = wet.builder.appTop(@appTop);
     </script>
 
     @*@(await Html.RenderComponentAsync<DefTop>(RenderMode.ServerPrerendered, new { Json = json } ))*@
@@ -68,9 +72,7 @@
         <!-- Write closure template -->
         <script>
             var defPreFooter = document.getElementById("def-preFooter");
-            defPreFooter.outerHTML = wet.builder.preFooter({
-                "dateModified": "2019-03-08"
-            });
+            defPreFooter.outerHTML = wet.builder.preFooter(@preFooter);
         </script>
     </main>
     <div id="def-footer">
@@ -82,15 +84,11 @@
 
     <script>
         var defFooter = document.getElementById("def-footer");
-        defFooter.outerHTML = wet.builder.appFooter({
-            "showFeatures": false
-        });
+        defFooter.outerHTML = wet.builder.appFooter(@appFooter);
     </script>
     <!-- Write closure template -->
     <script>
-        document.write(wet.builder.refFooter({
-            "isApplication": true
-        }));
+        document.write(wet.builder.refFooter(@refFooter));
     </script>
     <script>
         (function () {
@@ -103,7 +101,6 @@
     <script src="_framework/blazor.server.js"></script>
 </body>
 </html>
-
 
 @*https://stackoverflow.com/questions/60951806/asp-net-core-blazor-how-to-load-different-host-cshtml-files-based-on-header-va*@
 

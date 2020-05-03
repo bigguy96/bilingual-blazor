@@ -20,7 +20,7 @@ namespace LocalizationApp.Utils
                      .Where(t => t.IsSubclassOf(typeof(ComponentBase)))
                      .Where(x => x.Name.Length > 1)
                      .Select(s => new { RouteAttributes = s.GetCustomAttributes(inherit: true).OfType<RouteAttribute>() });
-            
+
             //get route values for the current page and get the alternate language.            
             var alternateRoute = routeAttributes
                 .SingleOrDefault(x => x.RouteAttributes.Any(a => a.Template.Contains(url)))?.RouteAttributes
@@ -35,6 +35,50 @@ namespace LocalizationApp.Utils
             };
 
             return JsonSerializationHelper.SerializeToJson(appTop);
+        }
+
+        public static HtmlString GetRefTop()
+        {
+            var refTop = new RefTop
+            {
+                IsApplication = true
+            };
+
+            return JsonSerializationHelper.SerializeToJson(refTop);
+        }
+
+        public static HtmlString GetDefPreFooter()
+        {
+            var preFooter = new PreFooter
+            {
+                CdnEnv = "prod",
+                DateModified = "2020-05-05",
+                ShowFeedback = false,
+                ShowShare = false
+            };
+
+            return JsonSerializationHelper.SerializeToJson(preFooter);
+        }
+
+        public static HtmlString GetAppFooter()
+        {
+            var appFooter = new AppFooter
+            {
+                ShowFeatures = false,
+                ShowFooter = false
+            };
+
+            return JsonSerializationHelper.SerializeToJson(appFooter);
+        }
+
+        public static HtmlString GetRefFooter()
+        {
+            var refFooter = new RefFooter
+            {
+                IsApplication = true
+            };
+
+            return JsonSerializationHelper.SerializeToJson(refFooter);
         }
     }
 }
