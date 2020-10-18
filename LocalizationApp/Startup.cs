@@ -20,7 +20,7 @@ namespace LocalizationApp
         }
 
         public IConfiguration Configuration { get; }
-        private static string currentCulture = "en";
+        private static string _currentCulture = "en";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -50,21 +50,13 @@ namespace LocalizationApp
 
                     if (segments.Length > 1 && segments[0].Length == 2)
                     {
-                        if(segments[0].Equals("en", StringComparison.OrdinalIgnoreCase))
-                        {
-                            currentCulture = "en";
-                        }
-                        else
-                        {
-                            currentCulture = "fr";
-                        }
+                        _currentCulture = segments[0].Equals("en", StringComparison.OrdinalIgnoreCase) ? "en" : "fr";
                     }
 
-                    var requestCulture = new ProviderCultureResult(currentCulture, currentCulture);
+                    var requestCulture = new ProviderCultureResult(_currentCulture, _currentCulture);
 
                     return await Task.FromResult(requestCulture);
                 }));
-
             });
         }
         #endregion
@@ -109,5 +101,4 @@ namespace LocalizationApp
 //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization-extensibility?view=aspnetcore-3.1
 //https://www.jeffogata.com/asp-net-core-localization-culture/
 //https://stackoverflow.com/questions/38170739/handle-culture-in-route-url-via-requestcultureproviders
-
 //https://stackoverflow.com/questions/58589274/localization-based-on-url-net-core-3-0

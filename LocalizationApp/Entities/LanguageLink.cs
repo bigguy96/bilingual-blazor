@@ -18,33 +18,12 @@ namespace LocalizationApp.Entities
         /// Read only property, used to populate the Lang attribute of the language toggle link
         /// Value is defaulted by Template
         /// </summary>
-        public string Lang
-        {
-            get
-            {
-                if (_twoLetterCulture.Equals("en", StringComparison.OrdinalIgnoreCase))
-                {
-                    return "fr";
-                }
-                return "en";
-            }
-        }
+        public string Lang => _twoLetterCulture.Equals("en", StringComparison.OrdinalIgnoreCase) ? "fr" : "en";
 
         /// <summary>
         /// Read only property, used to populate the text attribute of the language toggle link
         /// Value is defaulted by Template
         /// </summary>
-        public string Text
-        {
-            get
-            {
-                if (_twoLetterCulture.Equals("en", StringComparison.OrdinalIgnoreCase))
-                {
-                    return "Français";
-                }
-                return "English";
-            }
-        }
-
+        public string Text => _twoLetterCulture.Equals("en", StringComparison.OrdinalIgnoreCase) ? "Français" : "English";
     }
 }
