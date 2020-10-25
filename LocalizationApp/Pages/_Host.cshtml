@@ -10,13 +10,11 @@
     var appName = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "English Application" : " Application Français";
 
     var path = HttpContext.Request.Path;
-    var refTop = LocalizationApp.Utils.JavascriptHelper.GetRefTop();
-    var appTop = LocalizationApp.Utils.JavascriptHelper.GetAppTop(path, appName);
-    var preFooter = LocalizationApp.Utils.JavascriptHelper.GetDefPreFooter();
-    var appFooter = LocalizationApp.Utils.JavascriptHelper.GetAppFooter();
-    var refFooter = LocalizationApp.Utils.JavascriptHelper.GetRefFooter();
-
-    //https://cenw-wscoe.github.io/sgdc-cdts/docs/internet-en.html
+    var refTop = Utils.JavascriptHelper.GetRefTop();
+    var appTop = Utils.JavascriptHelper.GetAppTop(path, appName);
+    var preFooter = Utils.JavascriptHelper.GetDefPreFooter();
+    var appFooter = Utils.JavascriptHelper.GetAppFooter();
+    var refFooter = Utils.JavascriptHelper.GetRefFooter();
 }
 
 <!DOCTYPE html>
@@ -35,7 +33,7 @@
     <!-- Meta data-->
     <!-- Load closure template scripts -->
     <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/soyutils.js"></script>
-    <script src=@string.Format("https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-{0}.js", twoLetterRequestCulture)></script>
+    <script src=@($"https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-{twoLetterRequestCulture}.js")></script>
     <noscript>
         <!-- Write closure fall-back static file -->
         <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/refTop.html -->
