@@ -1,11 +1,27 @@
 ﻿@page "/"
 @namespace LocalizationApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Localization
+
+@{
+    var requestCultureFeature = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+    var twoLetterRequestCulture = requestCultureFeature.RequestCulture.UICulture.TwoLetterISOLanguageName;
+    var toggle = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "Français" : "English";
+    var appName = twoLetterRequestCulture.Equals("en", StringComparison.CurrentCultureIgnoreCase) ? "English Application" : " Application Français";
+
+    var path = HttpContext.Request.Path;
+    var refTop = Utils.JavascriptHelper.GetRefTop();
+    var appTop = Utils.JavascriptHelper.GetAppTop(path, appName);
+    var preFooter = Utils.JavascriptHelper.GetDefPreFooter();
+    var appFooter = Utils.JavascriptHelper.GetAppFooter();
+    var refFooter = Utils.JavascriptHelper.GetRefFooter();
+}
 
 <!DOCTYPE html>
-<!--[if lt IE 9]><html class="no-js lt-ie9" lang="en" dir="ltr"><![endif]-->
+
+<!--[if lt IE 9]><html class="no-js lt-ie9" lang="@twoLetterRequestCulture" dir="ltr"><![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="en" dir="ltr">
+<html class="no-js" lang="@twoLetterRequestCulture" dir="ltr">
 <!--<![endif]-->
 <head>
     <meta charset="utf-8">
@@ -17,68 +33,77 @@
     <!-- Meta data-->
     <!-- Load closure template scripts -->
     <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/soyutils.js"></script>
-    <script src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-en.js"></script>
+    <script src=@($"https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-{twoLetterRequestCulture}.js")></script>
     <noscript>
         <!-- Write closure fall-back static file -->
         <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/refTop.html -->
     </noscript>
     <!-- Write closure template -->
     <script>
-        document.write(wet.builder.refTop({
-            "isApplication": true
-        }));
+        document.write(wet.builder.refTop(@refTop));
     </script>
+    <base href="~/" />
 </head>
 <body vocab="https://schema.org/" typeof="WebPage">
     <div id="def-top">
         <!-- Write closure fall-back static file -->
-        <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/custommenuTop-en.html -->
+        <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/custommenuTop-@(twoLetterRequestCulture).html -->
     </div>
     <!-- Write closure template -->
     <script>
-        var defTop = document.getElementById("def-top");
-        defTop.outerHTML = wet.builder.appTop({
-            "appName": [{ "text": "Application name", "href": "#" }],
-            "lngLinks": [{ "lang": "fr", "href": "apptop_custommenu-fr.html", "text": "Français" }],
-            "menuPath": "https://ssl-templates.services.gc.ca/app/cls/WET/gcweb/v4_0_28/cdts/ajax/appmenu-en.html"
-        });
+            var defTop = document.getElementById("def-top");
+            defTop.outerHTML = wet.builder.appTop(@appTop);
     </script>
+
+    @*@(await Html.RenderComponentAsync<DefTop>(RenderMode.ServerPrerendered, new { Json = json } ))*@
     <main role="main" property="mainContentOfPage" class="container">
-        <div data-ajax-replace="../ajax/securesamples.html"></div>
 
         <app>
             @(await Html.RenderComponentAsync<App>(RenderMode.ServerPrerendered))
         </app>
 
-        <script src="_framework/blazor.server.js"></script>
         <div id="def-preFooter">
+
             <!-- Write closure fall-back static file -->
-            <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/preFooter-en.html -->
+            <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/preFooter-@(twoLetterRequestCulture).html -->
         </div>
         <!-- Write closure template -->
         <script>
             var defPreFooter = document.getElementById("def-preFooter");
-            defPreFooter.outerHTML = wet.builder.preFooter({
-                "dateModified": "2019-03-08"
-            });
+            defPreFooter.outerHTML = wet.builder.preFooter(@preFooter);
         </script>
     </main>
     <div id="def-footer">
+
         <!-- Write closure fall-back static file -->
-        <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/appFooter-en.html -->
+        <!-- /ROOT/app/cls/WET/gcweb/v4_0_28/cdts/static/appFooter-@(twoLetterRequestCulture).html -->
     </div>
     <!-- Write closure template -->
+
     <script>
         var defFooter = document.getElementById("def-footer");
-        defFooter.outerHTML = wet.builder.appFooter({
-            "showFeatures": false
-        });
+        defFooter.outerHTML = wet.builder.appFooter(@appFooter);
     </script>
     <!-- Write closure template -->
     <script>
-        document.write(wet.builder.refFooter({
-            "isApplication": true
-        }));
+        document.write(wet.builder.refFooter(@refFooter));
     </script>
+    <script>
+        (function () {
+            const toggle = document.querySelector('#wb-lng ul li a');            
+            toggle.addEventListener('click', function () {
+                window.location = toggle.getAttribute('href');                
+            })            
+        })();
+    </script>    
+    <script src="_framework/blazor.server.js"></script>
 </body>
 </html>
+
+@*https://stackoverflow.com/questions/60951806/asp-net-core-blazor-how-to-load-different-host-cshtml-files-based-on-header-va*@
+
+@*https://docs.microsoft.com/en-us/aspnet/core/blazor/routing?view=aspnetcore-3.1*@
+
+@*https://www.c-sharpcorner.com/article/routing-in-blazor/*@
+
+@*https://www.google.com/search?ei=0UScXsf4NPGxggfZgp_QCQ&q=_framework%2Fblazor.server.js+404&oq=_framework%2Fblazor.server.js+&gs_lcp=CgZwc3ktYWIQARgBMgIIADICCAAyBQgAEM0CMgUIABDNAjIFCAAQzQIyBQgAEM0COgQIABBHOgQIABAeUKSbDFjgoAxg_NEMaABwBHgAgAGsAogB9AOSAQUyLTEuMZgBAKABAqABAaoBB2d3cy13aXo&sclient=psy-ab*@

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using System;
+using System.Threading.Tasks;
 
 namespace LocalizationApp
 {
@@ -18,13 +20,14 @@ namespace LocalizationApp
         }
 
         public IConfiguration Configuration { get; }
+        private static string _currentCulture = "en";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();
+            services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
             #region Localization
 
@@ -40,10 +43,23 @@ namespace LocalizationApp
                 options.DefaultRequestCulture = new RequestCulture("en");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
-            });
 
-            #endregion 
+                options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
+                {
+                    var segments = context.Request.Path.Value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (segments.Length > 1 && segments[0].Length == 2)
+                    {
+                        _currentCulture = segments[0].Equals("en", StringComparison.OrdinalIgnoreCase) ? "en" : "fr";
+                    }
+
+                    var requestCulture = new ProviderCultureResult(_currentCulture, _currentCulture);
+
+                    return await Task.FromResult(requestCulture);
+                }));
+            });
         }
+        #endregion
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -81,3 +97,8 @@ namespace LocalizationApp
         }
     }
 }
+
+//https://docs.microsoft.com/en-us/aspnet/core/fundamentals/localization-extensibility?view=aspnetcore-3.1
+//https://www.jeffogata.com/asp-net-core-localization-culture/
+//https://stackoverflow.com/questions/38170739/handle-culture-in-route-url-via-requestcultureproviders
+//https://stackoverflow.com/questions/58589274/localization-based-on-url-net-core-3-0
